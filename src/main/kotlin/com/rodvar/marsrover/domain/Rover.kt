@@ -5,15 +5,18 @@ package com.rodvar.marsrover.domain
  */
 data class Rover(val id: Int, var orientation: Orientation) {
 
-    lateinit var plateau: Plateau
-    var lastX: Int = -1
-    var lastY: Int = -1
+    var plateau: Plateau? = null
+    var lastX: Int = Int.MIN_VALUE
+    var lastY: Int = Int.MIN_VALUE
 
     enum class Orientation {
         N, S, W, E
     }
 
     fun move(instructionsString: String) {
+        if (this.plateau == null)
+            throw IllegalStateException("Cannot move: rover is not in a plateau")
+
         for (i in 0..instructionsString.length - 1) {
             when (instructionsString[i]) {
                 'L' -> rotateLeft()
@@ -25,7 +28,7 @@ data class Rover(val id: Int, var orientation: Orientation) {
 
     private fun moveForward() {
         println("move 1 fwd")
-        this.plateau.move(this)
+        this.plateau?.move(this)
     }
 
     fun rotateRight() {

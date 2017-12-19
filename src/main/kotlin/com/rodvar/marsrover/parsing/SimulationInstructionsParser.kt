@@ -24,10 +24,14 @@ class SimulationInstructionsParser(val inputData: String) {
         var id = 1
         instructionLines.filter { it -> instructionLines.indexOf(it) % 2 != 0 && instructionLines.indexOf(it) > 0 }
                 .map { it ->
-                    plateau.position(
-                            Rover(id++, Rover.Orientation.valueOf(it[it.length - 1].toString())),
-                            it[0].toString().toInt(),
-                            it[2].toString().toInt())
+                    try {
+                        plateau.position(
+                                Rover(id++, Rover.Orientation.valueOf(it[it.length - 1].toString())),
+                                it[0].toString().toInt(),
+                                it[2].toString().toInt())
+                    } catch (e : IllegalArgumentException) {
+                        println("Ignoring rover because of invalid position")
+                    }
                 }
     }
 

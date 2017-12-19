@@ -22,6 +22,9 @@ class MarsRoverSimulator {
         val plateau = simulationInstructionsReader.init()
         println(String.format("Dimentions (%s,%s)", plateau.maxX, plateau.maxY))
 
+        if (!plateau.isValid())
+            throw IllegalArgumentException("Illegal dimentions provided")
+
         simulationInstructionsReader.positioning(plateau)
         executeMovements(plateau, simulationInstructionsReader)
 
@@ -30,8 +33,13 @@ class MarsRoverSimulator {
 
     private fun executeMovements(plateau: Plateau, simulationInstructionsReader: SimulationInstructionsParser) {
         println("Executing movements.. " + simulationInstructionsReader.roversQuantity)
-        for (i in 1..simulationInstructionsReader.roversQuantity)
-            plateau.move(i, simulationInstructionsReader.instructionsFor(i))
+        for (i in 1..simulationInstructionsReader.roversQuantity) {
+            try {
+                plateau.move(i, simulationInstructionsReader.instructionsFor(i))
+            } catch (e: IndexOutOfBoundsException) {
+	         println("Ignoring movement trying to go out of bounds")	
+	    }
+        }
     }
 
 

@@ -6,12 +6,26 @@ Given the rover dimentions and the set of rovers + movement instructions, it wil
 
 The following assumptions has been made
 
- - If the given dimentions are invalid (not real), the simulation aborts with an error
+ - Provided plateau dimentions need to satisfy (x,y) where x > 0 && y > 0
  - If a given set of instructions for a rover indicates it's initial position outside of 
- the rover boundaries, that rover's set of instructions is ignored and the label IGNORED - INVALID 
- POSITION will be displayed as output
- - If a given set of instructions for a rover involves a collision with another rover,  that rover 
- will be considered unusable from that point, informing the crash position as 
-  it's final position and a CRASHED label
- - If a given set of instructions for a rover places it outside the rover at anytime, it's 
- considered lost and a label will be shown next to the last know position: LOST 
+ the rover boundaries, that rover's set of instructions is ignored
+ - If a given set of instructions for a rover involves a collision with another rover,  that will ignore that movement
+ - Movements that will put the rover outside a plateau will be ignored
+ - It'a assumed that any test data input will respect the format provided on the example, no extra spaces
+ between characters, or blank lines
+ - In this version, plateau max dimensions are [0,0] - [9,9]
+ - If the input does not bring any rover position data, a legend "No rovers provided" is gonna be shown as a result
+ 
+
+To test this code you could either:
+
+ - read the project with any IDE that support gradle
+ - run on command line:
+   - $gradle clean build
+   - $java -jar build/libs/mars_rover.jar "<YOUR_INPUT>"
+ - build through command line as explained above and then open file:///Users/rodvar/mars_rover/build/reports/tests/test/index.html 
+ to see the test results
+ 
+ Any questions or improvements? http://github.com/rodvar 
+ Thanks!
+ Rodrigo

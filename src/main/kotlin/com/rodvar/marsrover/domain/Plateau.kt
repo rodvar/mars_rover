@@ -17,6 +17,8 @@ data class Plateau(val maxX: Int, val maxY: Int) {
     }
 
     fun position(rover: Rover?, x: Int, y: Int) {
+        if (x > maxX || y > maxY || x < 0 || y < 0)
+            throw IllegalArgumentException("Cannot position rover on a non existant cell")
         updateRoverPosition(rover, x, y)
         if (rover != null) {
             this.rovers.add(rover)
@@ -53,7 +55,9 @@ data class Plateau(val maxX: Int, val maxY: Int) {
         val nextCell = this.matrix.get(rover.lastX).get(rover.lastY + amount)
         if (nextCell == null) { // ok to move
             this.updateRoverPosition(rover, rover.lastX, rover.lastY + amount)
-        } else throw IllegalArgumentException("Cannot move rover there")
+        } else {
+	    println("Ignoring movement to avoid collision")
+	}
     }
 
     private fun moveHorizontal(rover: Rover, amount: Int) {
@@ -66,6 +70,9 @@ data class Plateau(val maxX: Int, val maxY: Int) {
 
     }
 
-
     private fun findRoverById(roverId: Int) = this.rovers.get(roverId - 1)
+
+    fun isValid(): Boolean {
+        return this.maxX >= 0 && this.maxY >= 0
+    }
 }
