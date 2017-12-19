@@ -20,7 +20,7 @@ class MarsRoverSimulator {
         simulationInstructionsReader.parse()
 
         val plateau = simulationInstructionsReader.init()
-        println(String.format("(%s,%s)", plateau.maxX, plateau.maxY))
+        println(String.format("Dimentions (%s,%s)", plateau.maxX, plateau.maxY))
 
         simulationInstructionsReader.positioning(plateau)
         executeMovements(plateau, simulationInstructionsReader)
@@ -29,7 +29,9 @@ class MarsRoverSimulator {
     }
 
     private fun executeMovements(plateau: Plateau, simulationInstructionsReader: SimulationInstructionsParser) {
-
+        println("Executing movements.. " + simulationInstructionsReader.roversQuantity)
+        for (i in 1..simulationInstructionsReader.roversQuantity)
+            plateau.move(i, simulationInstructionsReader.instructionsFor(i))
     }
 
 
