@@ -19,11 +19,11 @@ The following assumptions has been made
 
 To test this code you could either:
 
- - read the project with any IDE that support gradle
+ - read the project with any IDE that support gradle and run it.
  - run on command line:
    - $gradle clean build
    - $java -jar build/libs/mars_rover.jar "<YOUR_INPUT>"
- - build through command line as explained above and then open file:///Users/rodvar/mars_rover/build/reports/tests/test/index.html 
+ - build through command line as explained above and then open file://<YOUR_PATH>/mars_rover/build/reports/tests/test/index.html 
  to see the test results
  
  Any questions or improvements? http://github.com/rodvar 
