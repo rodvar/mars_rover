@@ -21,10 +21,5 @@ class SimulationInstructionsParser(val inputData: String) {
         var id = 1
         instructionLines.filter { it -> instructionLines.indexOf(it) % 2 != 0 && instructionLines.indexOf(it) > 0 }
                 .map { it -> plateau.position(Rover(id++, it[it.length - 1]), it[0].toString().toInt(), it[2].toString().toInt()) }
-//        for (i in instructionLines.indices) {
-//            if (i > 0 && i % 2 != 0) {
-//                println(instructionLines[i])
-//            }
-//        }
     }
 }

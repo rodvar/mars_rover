@@ -29,7 +29,7 @@ class MarsRoverSimulator {
     }
 
     private fun executeMovements(plateau: Plateau, simulationInstructionsReader: SimulationInstructionsParser) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+
     }
 
 
