@@ -1,0 +1,11 @@
+version: 2
+jobs:
+  build:
+    docker:
+      - image: circleci/openjdk:8-jdk
+    steps:
+      - checkout
+      - run: gradle --debug clean build
+#      - run: java -jar build/libs/mars_rover
+      - store_test_results:
+          path: build/reports/tests/test
