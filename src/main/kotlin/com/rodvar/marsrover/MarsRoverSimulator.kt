@@ -53,9 +53,11 @@ class MarsRoverSimulator {
         @JvmStatic
         private fun help(): String {
             return "Welcome to Mars-Rover simulator\n\n" +
-                    "To run a file execute like this:\n" +
+                    "To run a file execute this program like this:\n" +
                     "  $ java -jar build/lib/mars_rover.jar -f test.txt\n\n" +
-                    "Where text.txt is your test file"
+                    "Where text.txt is your test file\n" +
+                    "A test file is already provided, and a script that builds and runs it as well. Simple go:\n" +
+                    " $./run_test.sh"
         }
 
         @JvmStatic
