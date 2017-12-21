@@ -3,9 +3,14 @@ package com.rodvar.marsrover
 import com.rodvar.marsrover.domain.Plateau
 import com.rodvar.marsrover.parsing.RoversPresenter
 import com.rodvar.marsrover.parsing.SimulationInstructionsParser
+import java.io.File
+import java.io.InputStream
+
 
 /**
  * Created by rodvar on 19/12/17.
+ *
+ * See README.md file for details
  */
 class MarsRoverSimulator {
 
@@ -44,9 +49,30 @@ class MarsRoverSimulator {
 
 
     companion object {
+
+        @JvmStatic
+        private fun help(): String {
+            return "Welcome to Mars-Rover simulator\n\n" +
+                    "To run a file execute like this:\n" +
+                    "  $ java -jar build/lib/mars_rover.jar -f test.txt\n\n" +
+                    "Where text.txt is your test file"
+        }
+
         @JvmStatic
         fun main(args: Array<String>) {
-            println(MarsRoverSimulator().execute(args[0]))
+            when {
+                args.isEmpty() -> println(help())
+                args[0] == "-f" -> {
+                    try {
+                        val inputStream: InputStream = File(args[1]).inputStream()
+                        val inputString = inputStream.bufferedReader().use { it.readText() }
+                        println(MarsRoverSimulator().execute(inputString))
+                    } catch (e: Exception) {
+                        println("Failed to parse file: " + e.localizedMessage)
+                    }
+                }
+                else -> println(MarsRoverSimulator().execute(args[0]))
+            }
         }
     }
 }
