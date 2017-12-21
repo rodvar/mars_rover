@@ -2,11 +2,11 @@
 
 It's a square plateau rover landing simulator.
 
-Given the rover dimentions and the set of rovers + movement instructions, it will determine the final position of each rover.
+Given the rover dimensions and the set of rovers + movement instructions, it will determine the final position of each rover.
 
 The following assumptions has been made
 
- - Provided plateau dimentions need to satisfy (x,y) where x > 0 && y > 0
+ - Provided plateau dimensions need to satisfy (x,y) where x > 0 && y > 0
  - If a given set of instructions for a rover indicates it's initial position outside of 
  the rover boundaries, that rover's set of instructions is ignored
  - If a given set of instructions for a rover involves a collision with another rover,  that will ignore that movement

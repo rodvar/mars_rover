@@ -25,10 +25,10 @@ class MarsRoverSimulator {
         simulationInstructionsReader.parse()
 
         val plateau = simulationInstructionsReader.init()
-        println(String.format("Dimentions (%s,%s)", plateau.maxX, plateau.maxY))
+        println(String.format("Dimensions (%s,%s)", plateau.maxX, plateau.maxY))
 
         if (!plateau.isValid())
-            throw IllegalArgumentException("Illegal dimentions provided")
+            throw IllegalArgumentException("Illegal dimensions provided")
 
         simulationInstructionsReader.positioning(plateau)
         executeMovements(plateau, simulationInstructionsReader)

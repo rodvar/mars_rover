@@ -15,7 +15,7 @@ class MarsRoverSimulatorTest {
     }
 
     @Test(expected = IllegalArgumentException::class)
-    fun testIllegalDimentions() {
+    fun testIllegalDimensions() {
         MarsRoverSimulator().execute("-1 0")
     }
 
