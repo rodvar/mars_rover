@@ -17,7 +17,7 @@ data class Rover(val id: Int, var orientation: Orientation) {
         if (this.plateau == null)
             throw IllegalStateException("Cannot move: rover is not in a plateau")
 
-        for (i in 0..instructionsString.length - 1) {
+        for (i in 0 until instructionsString.length) {
             when (instructionsString[i]) {
                 'L' -> rotateLeft()
                 'R' -> rotateRight()

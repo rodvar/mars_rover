@@ -1,8 +1,29 @@
-# mars_rover
+# Mars Rover Landing Simulator
 
 It's a square plateau rover landing simulator.
 
 Given the rover dimensions and the set of rovers + movement instructions, it will determine the final position of each rover.
+
+## Version 1.0
+
+# What's new ?
+
+ - Plateau can be of any dimension, numbers could be anything from (Int.MIN, Int.MAX]
+ - Much more input flexibility.
+ - 
+ - CI during development, much robust version :)
+
+# How to test it
+
+ Simply run `$java -jar build/libs/mars_rover.jar` (no parameters) for instructions.
+ 
+ Or you could run the provided test.txt sample input file with the bash script:
+ 
+  - `./run_test.sh`
+  
+ This builds (running all the test cases) and then runs with the input file. Enjoy!
+
+## Version 0.1
 
 The following assumptions has been made
 
@@ -10,7 +31,7 @@ The following assumptions has been made
  - If a given set of instructions for a rover indicates it's initial position outside of 
  the rover boundaries, that rover's set of instructions is ignored
  - If a given set of instructions for a rover involves a collision with another rover,  that will ignore that movement
- - Movements that will put the rover outside a plateau will be ignored
+ - Movements that would put the rover outside a plateau will be ignored
  - It'a assumed that any test data input will respect the format provided on the example, no extra spaces
  between characters, or blank lines
  - In this version, plateau max dimensions are [0,0] - [9,9]

@@ -19,21 +19,21 @@ class MarsRoverSimulator {
      * Executes the simulation based on the inputData string, returning the results as a striong as well
      */
     fun execute(inputData: String): String {
-        println("Received input: " + inputData)
+        try {
+            println("Received input: " + inputData)
 
-        val simulationInstructionsReader = SimulationInstructionsParser(inputData)
-        simulationInstructionsReader.parse()
+            val simulationInstructionsReader = SimulationInstructionsParser(inputData)
+            simulationInstructionsReader.parse()
+            val plateau = simulationInstructionsReader.init()
+            
+            println(String.format("Dimensions (%s,%s)", plateau.maxX, plateau.maxY))
+            simulationInstructionsReader.positioning(plateau)
+            executeMovements(plateau, simulationInstructionsReader)
 
-        val plateau = simulationInstructionsReader.init()
-        println(String.format("Dimensions (%s,%s)", plateau.maxX, plateau.maxY))
-
-        if (!plateau.isValid())
-            throw IllegalArgumentException("Illegal dimensions provided")
-
-        simulationInstructionsReader.positioning(plateau)
-        executeMovements(plateau, simulationInstructionsReader)
-
-        return RoversPresenter(plateau.rovers).toString()
+            return RoversPresenter(plateau.rovers).toString()
+        } catch (e: Exception) {
+            return e.localizedMessage
+        }
     }
 
     private fun executeMovements(plateau: Plateau, simulationInstructionsReader: SimulationInstructionsParser) {

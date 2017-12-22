@@ -6,9 +6,11 @@ package com.rodvar.marsrover.domain
 data class Plateau(val maxX: Int, val maxY: Int) {
 
     var rovers: MutableList<Rover> = mutableListOf()
-    val matrix: MutableList<MutableList<Rover?>> = mutableListOf()
+    private val matrix: MutableList<MutableList<Rover?>> = mutableListOf()
 
     init {
+        if (!this.isValid())
+            throw IllegalArgumentException(ILLEGAL_DIMENSIONS)
         for (x in 0..maxX) {
             matrix.add(mutableListOf())
             for (y in 0..maxY)
@@ -52,9 +54,9 @@ data class Plateau(val maxX: Int, val maxY: Int) {
     private fun moveVertical(rover: Rover, amount: Int) {
         val currentX = rover.lastX
         val currentY = rover.lastY
-        val nextCell = this.matrix.get(rover.lastX).get(rover.lastY + amount)
+        val nextCell = this.matrix.get(currentX).get(currentY + amount)
         if (nextCell == null) { // ok to move
-            this.updateRoverPosition(rover, rover.lastX, rover.lastY + amount)
+            this.updateRoverPosition(rover, currentX, currentY + amount)
         } else {
 	    println("Ignoring movement to avoid collision")
 	}
@@ -63,9 +65,9 @@ data class Plateau(val maxX: Int, val maxY: Int) {
     private fun moveHorizontal(rover: Rover, amount: Int) {
         val currentX = rover.lastX
         val currentY = rover.lastY
-        val nextCell = this.matrix.get(rover.lastX + amount).get(rover.lastY)
+        val nextCell = this.matrix.get(currentX + amount).get(currentY)
         if (nextCell == null) { // ok to move
-            this.updateRoverPosition(rover, rover.lastX + amount, rover.lastY)
+            this.updateRoverPosition(rover, currentX + amount, currentY)
         } else throw IllegalArgumentException("Cannot move rover there")
 
     }
@@ -73,6 +75,10 @@ data class Plateau(val maxX: Int, val maxY: Int) {
     private fun findRoverById(roverId: Int) = this.rovers.get(roverId - 1)
 
     fun isValid(): Boolean {
-        return this.maxX >= 0 && this.maxY >= 0
+        return this.maxX > 0 && this.maxY > 0
+    }
+
+    companion object {
+        val ILLEGAL_DIMENSIONS = "Plateau cannot have 0 or negative dimensions"
     }
 }

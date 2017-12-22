@@ -16,8 +16,14 @@ class SimulationInstructionsParser(val inputData: String) {
         roversQuantity = (instructionLines.size - 1) / 2
     }
 
-    fun init() =
-            Plateau(instructionLines[0].split(" ")[0].toInt(), instructionLines[0].split(" ")[1].toInt())
+    @Throws(ParsingException::class)
+    fun init(): Plateau {
+        try {
+            return Plateau(instructionLines[0].split(" ")[0].toInt(), instructionLines[0].split(" ")[1].toInt())
+        } catch (e: NumberFormatException) {
+            throw ParsingException(INVALID_DIMENSIONS, e)
+        }
+    }
 
     fun positioning(plateau: Plateau) {
         println("Positioning..")
@@ -38,4 +44,13 @@ class SimulationInstructionsParser(val inputData: String) {
     fun instructionsFor(roverId: Int) =
             instructionLines.filter { it -> instructionLines.indexOf(it) % 2 == 0 && instructionLines.indexOf(it) > 0 }[roverId - 1]
 
+
+    /**
+     * Exceptions definition
+     */
+    class ParsingException(s: String, e: NumberFormatException) : Exception(s, e)
+
+    companion object {
+        val INVALID_DIMENSIONS = "Invalid dimensions provided"
+    }
 }
