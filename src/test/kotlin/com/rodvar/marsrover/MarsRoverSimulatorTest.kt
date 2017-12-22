@@ -11,6 +11,9 @@ class MarsRoverSimulatorTest {
     private val BASIC_TEST_INPUT = "5 5\n1 2 N\nLMLMLMLMM\n3 3 E\nMMRMMRMRRM"
     private val BASIC_TEST_EXPECTED = "1 3 N\n5 1 E"
 
+    private val TEST_INPUT_BIGGER = "500 500\n100 200 N\nLMLMLMLMMMMMMMMMMMM\n300 300 E\nMMRMMRMRRMMMMMMMM"
+    private val TEST_INPUT_BIGGER_EXPECTED = "100 211 N\n309 298 E"
+
     private val SUPPORTS_BLANK_LINES = "\n5 5\n\n\n1 2 N\n\nLLLRRRM\n\n"
     private val SUPPORTS_BLANK_LINES_EXPECTED = "1 3 N"
 
@@ -23,6 +26,11 @@ class MarsRoverSimulatorTest {
     @Test
     fun testBasicProvidedDataInput() {
         assertEquals(BASIC_TEST_EXPECTED, MarsRoverSimulator().execute(BASIC_TEST_INPUT))
+    }
+
+    @Test
+    fun testBiggerNumbersExample() {
+        assertEquals(TEST_INPUT_BIGGER_EXPECTED, MarsRoverSimulator().execute(TEST_INPUT_BIGGER))
     }
 
     @Test
