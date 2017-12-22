@@ -6,8 +6,8 @@ package com.rodvar.marsrover.domain
 data class Rover(val id: Int, var orientation: Orientation) {
 
     var plateau: Plateau? = null
-    var lastX: Int = Int.MIN_VALUE
-    var lastY: Int = Int.MIN_VALUE
+    var x: Int = Int.MIN_VALUE
+    var y: Int = Int.MIN_VALUE
 
     enum class Orientation {
         N, S, W, E
@@ -49,9 +49,5 @@ data class Rover(val id: Int, var orientation: Orientation) {
             Orientation.W -> this.orientation = Orientation.S
             Orientation.E -> this.orientation = Orientation.N
         }
-    }
-
-    fun lastPositionIsValid(): Boolean {
-        return this.lastX >= 0 && this.lastY >= 0
     }
 }

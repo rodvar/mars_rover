@@ -11,37 +11,53 @@ data class Plateau(val maxX: Int, val maxY: Int) {
     init {
         if (!this.isValid())
             throw IllegalArgumentException(ILLEGAL_DIMENSIONS)
-        for (x in 0..maxX) {
+        for (x in 0 until maxX) {
             matrix.add(mutableListOf())
-            for (y in 0..maxY)
-                matrix.get(x).add(null)
+            for (y in 0 until maxY)
+                matrix[x].add(null)
         }
     }
 
-    fun position(rover: Rover?, x: Int, y: Int) {
-        if (x > maxX || y > maxY || x < 0 || y < 0)
-            throw IllegalArgumentException("Cannot position rover on a non existant cell")
-        updateRoverPosition(rover, x, y)
+    /**
+     * Positions the rover on this Plateau.
+     * @throws IllegalArgumentException if the rover is outside the Plateau
+     */
+    fun position(rover: Rover) {
+        if (!this.isRoverOnPlateau(rover))
+            throw IllegalArgumentException("Cannot position rover on a non existent cell")
+        updateRoverPosition(rover, rover.x, rover.y)
         if (rover != null) {
             this.rovers.add(rover)
             rover.plateau = this
         }
     }
 
-    private fun updateRoverPosition(rover: Rover?, x: Int, y: Int) {
-        if (rover?.lastPositionIsValid()!!)
-            this.matrix.get(rover.lastX).remove(rover)
-        this.matrix.get(x).add(y, rover)
-        rover.lastX = x
-        rover.lastY = y
+    /**
+     * Change rover position. If it's on plateau, removes it first
+     * If after position change is on plateau, adds it back.
+     */
+    private fun updateRoverPosition(rover: Rover, x: Int, y: Int) {
+        if (this.isRoverOnPlateau(rover))
+            this.matrix[rover.x].remove(rover)
+        rover.x = x
+        rover.y = y
+        if (this.isRoverOnPlateau(rover))
+            this.matrix[x].add(y, rover)
     }
+
+    /**
+     * @return true if rover is within this bounderies
+     */
+    private fun isRoverOnPlateau(rover: Rover): Boolean =
+            0 <= rover.x && rover.x < this.maxX && 0 <= rover.y && rover.y < this.maxY
+
 
     fun move(roverId: Int, instructionsString: String) {
         findRoverById(roverId).move(instructionsString)
     }
 
     fun move(rover: Rover) {
-        val foundRover = this.matrix.get(rover.lastX).get(rover.lastY)
+        val foundRover = this.matrix.get(rover.x).get(rover.y)
         assert(rover === foundRover)
         when (foundRover?.orientation) {
             Rover.Orientation.N -> moveVertical(rover, 1)
@@ -52,19 +68,19 @@ data class Plateau(val maxX: Int, val maxY: Int) {
     }
 
     private fun moveVertical(rover: Rover, amount: Int) {
-        val currentX = rover.lastX
-        val currentY = rover.lastY
+        val currentX = rover.x
+        val currentY = rover.y
         val nextCell = this.matrix.get(currentX).get(currentY + amount)
         if (nextCell == null) { // ok to move
             this.updateRoverPosition(rover, currentX, currentY + amount)
         } else {
-	    println("Ignoring movement to avoid collision")
-	}
+            println("Ignoring movement to avoid collision")
+        }
     }
 
     private fun moveHorizontal(rover: Rover, amount: Int) {
-        val currentX = rover.lastX
-        val currentY = rover.lastY
+        val currentX = rover.x
+        val currentY = rover.y
         val nextCell = this.matrix.get(currentX + amount).get(currentY)
         if (nextCell == null) { // ok to move
             this.updateRoverPosition(rover, currentX + amount, currentY)

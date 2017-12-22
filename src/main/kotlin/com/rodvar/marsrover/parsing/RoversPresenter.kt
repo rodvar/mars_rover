@@ -16,7 +16,7 @@ class RoversPresenter(val rovers: List<Rover>) {
         if (rovers.size > 0) {
             output = ""
             for (rover in rovers) {
-                output += rover.lastX.toString() + " " + rover.lastY.toString() + " " + rover.orientation.toString() + "\n"
+                output += rover.x.toString() + " " + rover.y.toString() + " " + rover.orientation.toString() + "\n"
             }
             output = output.substring(0, output.length - 1)
         }

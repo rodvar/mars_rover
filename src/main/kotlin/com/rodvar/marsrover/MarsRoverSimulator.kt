@@ -26,9 +26,6 @@ class MarsRoverSimulator {
             val simulationInstructionsReader = SimulationInstructionsParser(inputData)
             val plateau = simulationInstructionsReader.parse()
 
-            if (plateau == null)
-                throw IllegalArgumentException("No plateau provided")
-
             println(String.format("Dimensions (%s,%s)", plateau.maxX, plateau.maxY))
             simulationInstructionsReader.positioning(plateau)
             executeMovements(plateau, simulationInstructionsReader)

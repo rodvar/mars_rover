@@ -1,6 +1,7 @@
 package com.rodvar.marsrover.parsing
 
 import com.rodvar.marsrover.domain.Plateau
+import com.rodvar.marsrover.domain.Rover
 import java.util.regex.Pattern
 
 /**
@@ -10,17 +11,23 @@ import java.util.regex.Pattern
  */
 class SimulationInstructionsParser(val inputData: String) {
 
+    lateinit var inputDataLines: List<String>
     var roversQuantity: Int = 0
 
+    // It is expected that the file starts with blank spaces, or the plateau definition
     private val PLATEAU_PATTERN = Pattern.compile("^\n* *-?\\d+ +-?\\d+.*")
-    private val ROVER_PATTERN = Pattern.compile("")
+    // Pattern to analise a line to see if it's a rover definition
+    private val ROVER_POSITION_LINE_PATTERN = Pattern.compile(" *-?\\d+ +-?\\d+ +(N|E|W|S) *")
+    // Pattern to analise a line to see if it's a rover instructions set
+    private val ROVER_INSTRUCTIONS_LINE_PATTERN = Pattern.compile(" *(L|R|M) *")
 
     /**
      *
      */
-    fun parse(): Plateau? {
+    fun parse(): Plateau {
+        inputDataLines = inputData.split("\n")
         val plateau = this.generatePlateau()
-//        roversQuantity = (instructionLines.size - 1) / 2
+        plateau ?: throw IllegalArgumentException(NO_PLATEAU_PROVIDED)
         return plateau
     }
 
@@ -29,9 +36,8 @@ class SimulationInstructionsParser(val inputData: String) {
         try {
             val matcher = PLATEAU_PATTERN.matcher(inputData)
             var plateauData: List<String> = listOf()
-            if (matcher.find()) {
+            if (matcher.find())
                 plateauData = matcher.group().toString().trim().split(Regex(" +"))
-            }
             return when {
                 plateauData.isEmpty() -> null
                 else -> Plateau(plateauData[0].toInt(), plateauData[1].toInt())
@@ -43,22 +49,30 @@ class SimulationInstructionsParser(val inputData: String) {
 
     fun positioning(plateau: Plateau) {
         println("Positioning..")
-        var id = 1
-//        instructionLines.filter { it -> instructionLines.indexOf(it) % 2 != 0 && instructionLines.indexOf(it) > 0 }
-//                .map { it ->
-//                    try {
-//                        plateau.position(
-//                                Rover(id++, Rover.Orientation.valueOf(it[it.length - 1].toString())),
-//                                it[0].toString().toInt(),
-//                                it[2].toString().toInt())
-//                    } catch (e : IllegalArgumentException) {
-//                        println("Ignoring rover because of invalid position")
-//                    }
-//                }
+        inputDataLines.filter { it ->
+            !it.isBlank()
+        }
+                .map { it ->
+                    try {
+                        val matcher = ROVER_POSITION_LINE_PATTERN.matcher(it)
+                        if (matcher.find()) {
+                            val roverData = matcher.group().toString().trim().split(Regex(" +"))
+                            val rover = Rover(++roversQuantity, Rover.Orientation.valueOf(roverData[2]))
+                            rover.x = roverData[0].toInt()
+                            rover.y = roverData[1].toInt()
+                            plateau.position(rover)
+                        }
+                    } catch (e: IllegalArgumentException) {
+                        println("Ignoring rover because of invalid position:\n" +
+                                " " + it)
+                    }
+                }
     }
 
-    fun instructionsFor(roverId: Int) = ""
-//            instructionLines.filter { it -> instructionLines.indexOf(it) % 2 == 0 && instructionLines.indexOf(it) > 0 }[roverId - 1]
+    fun instructionsFor(roverId: Int): String =
+            inputDataLines.filter { it ->
+                !it.isBlank() && ROVER_INSTRUCTIONS_LINE_PATTERN.matcher(it).find()
+            }[roverId - 1].trim()
 
 
     /**
@@ -68,5 +82,6 @@ class SimulationInstructionsParser(val inputData: String) {
 
     companion object {
         val INVALID_DIMENSIONS = "Invalid dimensions provided"
+        val NO_PLATEAU_PROVIDED = "No plateau provided"
     }
 }
