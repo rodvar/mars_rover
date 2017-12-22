@@ -51,22 +51,21 @@ class SimulationInstructionsParser(val inputData: String) {
         println("Positioning..")
         inputDataLines.filter { it ->
             !it.isBlank()
-        }
-                .map { it ->
+        }.map { it ->
                     try {
                         val matcher = ROVER_POSITION_LINE_PATTERN.matcher(it)
                         if (matcher.find()) {
                             val roverData = matcher.group().toString().trim().split(Regex(" +"))
-                            val rover = Rover(++roversQuantity, Rover.Orientation.valueOf(roverData[2]))
-                            rover.x = roverData[0].toInt()
-                            rover.y = roverData[1].toInt()
+                            val rover = Rover(++roversQuantity, Rover.Orientation.valueOf(roverData[2]), roverData[0].toInt(), roverData[1].toInt())
                             plateau.position(rover)
                         }
                     } catch (e: IllegalArgumentException) {
+                        roversQuantity--
                         println("Ignoring rover because of invalid position:\n" +
                                 " " + it)
                     }
                 }
+        println(roversQuantity.toString() + " rovers positioned")
     }
 
     fun instructionsFor(roverId: Int): String =

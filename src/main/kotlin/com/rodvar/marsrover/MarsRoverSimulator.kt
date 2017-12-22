@@ -39,13 +39,8 @@ class MarsRoverSimulator {
 
     private fun executeMovements(plateau: Plateau, simulationInstructionsReader: SimulationInstructionsParser) {
         println("Executing movements.. " + simulationInstructionsReader.roversQuantity)
-        for (i in 1..simulationInstructionsReader.roversQuantity) {
-            try {
-                plateau.move(i, simulationInstructionsReader.instructionsFor(i))
-            } catch (e: IndexOutOfBoundsException) {
-                println("Ignoring movement trying to go out of bounds")
-            }
-        }
+        for (i in 1..simulationInstructionsReader.roversQuantity)
+            plateau.move(i, simulationInstructionsReader.instructionsFor(i))
     }
 
 

@@ -3,19 +3,18 @@ package com.rodvar.marsrover.domain
 /**
  * Created by rodvar on 19/12/17.
  */
-data class Rover(val id: Int, var orientation: Orientation) {
+data class Rover(val id: Int, var orientation: Orientation, var x: Int, var y: Int) {
 
     var plateau: Plateau? = null
-    var x: Int = Int.MIN_VALUE
-    var y: Int = Int.MIN_VALUE
 
     enum class Orientation {
         N, S, W, E
     }
 
+    /**
+     * Moves this rover and let's the plateau (if any) know about it's location if changed
+     */
     fun move(instructionsString: String) {
-        if (this.plateau == null)
-            throw IllegalStateException("Cannot move: rover is not in a plateau")
 
         for (i in 0 until instructionsString.length) {
             when (instructionsString[i]) {
@@ -26,9 +25,24 @@ data class Rover(val id: Int, var orientation: Orientation) {
         }
     }
 
+    /**
+     * Moves this rover forward.
+     * If it has a plateau, it tells the plateau that it has moved away from its position
+     */
     private fun moveForward() {
         println("move 1 fwd")
-        this.plateau?.move(this)
+        var x = this.x
+        var y = this.y
+        when (this.orientation) {
+            Orientation.N -> y++
+            Orientation.S -> y--
+            Orientation.E -> x++
+            Orientation.W -> x--
+        }
+        if (this.plateau?.busy(x, y) == false)
+            this.plateau?.move(this, x, y)
+        this.x = x
+        this.y = y
     }
 
     fun rotateRight() {

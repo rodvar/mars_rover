@@ -25,7 +25,7 @@ data class Plateau(val maxX: Int, val maxY: Int) {
     fun position(rover: Rover) {
         if (!this.isRoverOnPlateau(rover))
             throw IllegalArgumentException("Cannot position rover on a non existent cell")
-        updateRoverPosition(rover, rover.x, rover.y)
+        updateRoverPosition(rover)
         if (rover != null) {
             this.rovers.add(rover)
             rover.plateau = this
@@ -36,62 +36,67 @@ data class Plateau(val maxX: Int, val maxY: Int) {
      * Change rover position. If it's on plateau, removes it first
      * If after position change is on plateau, adds it back.
      */
-    private fun updateRoverPosition(rover: Rover, x: Int, y: Int) {
+    private fun updateRoverPosition(rover: Rover, x: Int = rover.x, y: Int = rover.y) {
         if (this.isRoverOnPlateau(rover))
             this.matrix[rover.x].remove(rover)
-        rover.x = x
-        rover.y = y
-        if (this.isRoverOnPlateau(rover))
-            this.matrix[x].add(y, rover)
+        this.matrix[x].add(y, rover)
     }
 
     /**
      * @return true if rover is within this bounderies
      */
-    private fun isRoverOnPlateau(rover: Rover): Boolean =
-            0 <= rover.x && rover.x < this.maxX && 0 <= rover.y && rover.y < this.maxY
+    fun isRoverOnPlateau(rover: Rover): Boolean =
+            isOnPlateau(rover.x, rover.y)
 
+    /**
+     * @return true if coordinates (x,y) are in the plateau bounderies
+     */
+    fun isOnPlateau(x: Int, y: Int) = 0 <= x && x < this.maxX && 0 <= y && y < this.maxY
 
+    /**
+     * Tells the rover to move
+     */
     fun move(roverId: Int, instructionsString: String) {
         findRoverById(roverId).move(instructionsString)
     }
 
-    fun move(rover: Rover) {
-        val foundRover = this.matrix.get(rover.x).get(rover.y)
-        assert(rover === foundRover)
-        when (foundRover?.orientation) {
-            Rover.Orientation.N -> moveVertical(rover, 1)
-            Rover.Orientation.S -> moveVertical(rover, -1)
-            Rover.Orientation.E -> moveHorizontal(rover, 1)
-            Rover.Orientation.W -> moveHorizontal(rover, -1)
-        }
+    /**
+     * Moves on the right direction
+     * If the position is out of the Plateau bounderies, it get's ignored
+     */
+    fun move(rover: Rover, newX: Int, newY: Int) {
+        if (this.isOnPlateau(newX, newY)) {
+            val nextCell = this.matrix[newX][newY]
+            if (nextCell == null) { // ok to move
+                this.updateRoverPosition(rover, newX, newY)
+                println(String.format("%s moved to (%s,%s)", rover, newX, newY))
+            } else {
+                println("Avoiding rover collision..")
+            }
+        } else
+            println("Ignoring out of plateau rover coordinates..")
     }
 
-    private fun moveVertical(rover: Rover, amount: Int) {
-        val currentX = rover.x
-        val currentY = rover.y
-        val nextCell = this.matrix.get(currentX).get(currentY + amount)
-        if (nextCell == null) { // ok to move
-            this.updateRoverPosition(rover, currentX, currentY + amount)
-        } else {
-            println("Ignoring movement to avoid collision")
-        }
-    }
-
-    private fun moveHorizontal(rover: Rover, amount: Int) {
-        val currentX = rover.x
-        val currentY = rover.y
-        val nextCell = this.matrix.get(currentX + amount).get(currentY)
-        if (nextCell == null) { // ok to move
-            this.updateRoverPosition(rover, currentX + amount, currentY)
-        } else throw IllegalArgumentException("Cannot move rover there")
-
-    }
-
-    private fun findRoverById(roverId: Int) = this.rovers.get(roverId - 1)
+    /**
+     * Id is associated with position
+     */
+    private fun findRoverById(roverId: Int) = this.rovers[roverId - 1]
 
     fun isValid(): Boolean {
         return this.maxX > 0 && this.maxY > 0
+    }
+
+    /**
+     * @return true if that position is occupied
+     */
+    fun busy(x: Int, y: Int): Boolean {
+        var busy = false
+        try {
+            busy = this.matrix[x][y] != null
+        } catch (e: Exception) {
+            // do nth
+        }
+        return busy
     }
 
     companion object {

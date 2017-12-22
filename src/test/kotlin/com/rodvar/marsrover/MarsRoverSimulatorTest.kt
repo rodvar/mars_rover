@@ -51,11 +51,18 @@ class MarsRoverSimulatorTest {
                 "LMLMLMLMM"))
     }
 
+    @Test
+    fun testRoverLandedOutOfPlateau() {
+        assertEquals(RoversPresenter.NO_ROVERS_LANDED, MarsRoverSimulator().execute("5 5\n" +
+                "4 0 S\n" +
+                "MLM"))
+    }
+
     
     @Test
     fun testRoverMovingOutOfPlateau () {
-        assertEquals("0 0 S", MarsRoverSimulator().execute("5 5\n" +
+        assertEquals(RoversPresenter.NO_ROVERS_LANDED, MarsRoverSimulator().execute("5 5\n" +
                 "0 0 S\n" +
-                "M"))
+                "M"), "Should admit rover stepping off the plateau")
     }
 }

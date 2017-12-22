@@ -13,7 +13,7 @@ class RoverTest {
 
     @Before
     fun setup() {
-        this.rover = Rover(1, Rover.Orientation.N)
+        this.rover = Rover(1, Rover.Orientation.N, 0, 0)
     }
 
     @Test
@@ -40,8 +40,8 @@ class RoverTest {
         assertEquals(Rover.Orientation.N, this.rover.orientation)
     }
 
-    @Test(expected = IllegalStateException::class)
-    fun testCantMoveRoverWithoutPlateau() {
+    @Test
+    fun testCanMoveRoverWithoutPlateau() {
         this.rover.move("M")
     }
 
