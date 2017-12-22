@@ -2,6 +2,8 @@ package com.rodvar.marsrover.domain
 
 /**
  * Created by rodvar on 19/12/17.
+ *
+ * A Plateau is a square space table where rovers can land.
  */
 data class Plateau(val maxX: Int, val maxY: Int) {
 
@@ -26,10 +28,8 @@ data class Plateau(val maxX: Int, val maxY: Int) {
         if (!this.isRoverOnPlateau(rover))
             throw IllegalArgumentException("Cannot position rover on a non existent cell")
         updateRoverPosition(rover)
-        if (rover != null) {
-            this.rovers.add(rover)
-            rover.plateau = this
-        }
+        this.rovers.add(rover)
+        rover.plateau = this
     }
 
     /**

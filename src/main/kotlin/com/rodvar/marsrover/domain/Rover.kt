@@ -2,6 +2,9 @@ package com.rodvar.marsrover.domain
 
 /**
  * Created by rodvar on 19/12/17.
+ *
+ * A rover is a spaceship with a 2D position tracker and can be associated with a plateau
+ * It has a 4 point cardinal compass
  */
 data class Rover(val id: Int, var orientation: Orientation, var x: Int, var y: Int) {
 

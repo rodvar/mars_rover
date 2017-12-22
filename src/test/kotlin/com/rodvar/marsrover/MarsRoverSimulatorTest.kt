@@ -14,6 +14,9 @@ class MarsRoverSimulatorTest {
     private val SUPPORTS_BLANK_LINES = "\n5 5\n\n\n1 2 N\n\nLLLRRRM\n\n"
     private val SUPPORTS_BLANK_LINES_EXPECTED = "1 3 N"
 
+    private val SUPPORTS_BLANK_LINES2 = "\n10 10\n\n\n1 2 N\n\nLLLRRRM\n\n1 5 S\n\nMMRR"
+    private val SUPPORTS_BLANK_LINES2_EXPECTED = "1 3 N\n1 3 N"
+
     @Test
     fun testBasicProvidedDataSet() {
         assertEquals(BASIC_TEST_EXPECTED, MarsRoverSimulator().execute(BASIC_TEST_INPUT))
@@ -22,6 +25,11 @@ class MarsRoverSimulatorTest {
     @Test
     fun testSupportsBlankLines() {
         assertEquals(SUPPORTS_BLANK_LINES_EXPECTED, MarsRoverSimulator().execute(SUPPORTS_BLANK_LINES))
+    }
+
+    @Test
+    fun testSupportsBlanksLines2() {
+        assertEquals(SUPPORTS_BLANK_LINES2_EXPECTED, MarsRoverSimulator().execute(SUPPORTS_BLANK_LINES2))
     }
 
     @Test

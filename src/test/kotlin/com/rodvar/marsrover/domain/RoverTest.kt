@@ -41,8 +41,15 @@ class RoverTest {
     }
 
     @Test
-    fun testCanMoveRoverWithoutPlateau() {
-        this.rover.move("M")
+    fun testMoveForward() {
+        this.rover.move("MMMMMMMMMM")
+        assertEquals(0, rover.x)
+        assertEquals(10, rover.y)
+    }
+
+    @Test
+    fun testCanMoveRoverToNegativeCoordinatesWithoutPlateau() {
+        this.rover.move("RRM")
     }
 
 }
