@@ -17,9 +17,17 @@ class MarsRoverSimulatorTest {
     private val SUPPORTS_BLANK_LINES2 = "\n10 10\n\n\n1 2 N\n\nLLLRRRM\n\n1 5 S\n\nMMRR"
     private val SUPPORTS_BLANK_LINES2_EXPECTED = "1 3 N\n1 3 N"
 
+    private val ON_TOP_OF_OTHERS = "10 10\n4 4 N\nMR\n4 4 N\nMMRMRMRMMM"
+    private val ON_TOP_OF_OTHERS_EXPECTED = "4 5 E"
+
     @Test
     fun testBasicProvidedDataSet() {
         assertEquals(BASIC_TEST_EXPECTED, MarsRoverSimulator().execute(BASIC_TEST_INPUT))
+    }
+
+    @Test
+    fun testRoverPlacedOnTopOfOtherGetsIgnored() {
+        assertEquals(ON_TOP_OF_OTHERS_EXPECTED, MarsRoverSimulator().execute(ON_TOP_OF_OTHERS))
     }
 
     @Test

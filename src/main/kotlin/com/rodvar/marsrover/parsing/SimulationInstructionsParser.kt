@@ -63,6 +63,10 @@ class SimulationInstructionsParser(val inputData: String) {
                         roversQuantity--
                         println("Ignoring rover because of invalid position:\n" +
                                 " " + it)
+                    } catch (e: IllegalStateException) {
+                        roversQuantity--
+                        println("Ignoring rover because there is another rover in place\n" +
+                                " " + it)
                     }
                 }
         println(roversQuantity.toString() + " rovers positioned")

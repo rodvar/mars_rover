@@ -16,7 +16,7 @@ Given the rover dimensions and the set of rovers + movement instructions, it wil
 
 # How to test it
 
- Simply run `$java -jar build/libs/mars_rover.jar` (no parameters) for instructions.
+ Onced you cloned this repo, simply run `$java -jar build/libs/mars_rover.jar` (no parameters) for instructions.
  
  Or you could run the provided test.txt sample input file with the bash script:
  

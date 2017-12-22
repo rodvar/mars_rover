@@ -27,6 +27,8 @@ data class Plateau(val maxX: Int, val maxY: Int) {
     fun position(rover: Rover) {
         if (!this.isRoverOnPlateau(rover))
             throw IllegalArgumentException("Cannot position rover on a non existent cell")
+        if (this.busy(rover.x, rover.y))
+            throw IllegalStateException("Cannot position rover on top of other one.")
         updateRoverPosition(rover)
         this.rovers.add(rover)
         rover.plateau = this
