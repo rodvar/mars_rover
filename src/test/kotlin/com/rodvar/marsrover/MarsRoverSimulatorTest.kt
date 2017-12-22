@@ -21,7 +21,7 @@ class MarsRoverSimulatorTest {
     private val ON_TOP_OF_OTHERS_EXPECTED = "4 5 E"
 
     @Test
-    fun testBasicProvidedDataSet() {
+    fun testBasicProvidedDataInput() {
         assertEquals(BASIC_TEST_EXPECTED, MarsRoverSimulator().execute(BASIC_TEST_INPUT))
     }
 
@@ -67,17 +67,10 @@ class MarsRoverSimulatorTest {
                 "LMLMLMLMM"))
     }
 
-    @Test
-    fun testRoverLandedOutOfPlateau() {
-        assertEquals(RoversPresenter.NO_ROVERS_LANDED, MarsRoverSimulator().execute("5 5\n" +
-                "4 0 S\n" +
-                "MLM"))
-    }
-
     
     @Test
     fun testRoverMovingOutOfPlateau () {
-        assertEquals(RoversPresenter.NO_ROVERS_LANDED, MarsRoverSimulator().execute("5 5\n" +
+        assertEquals("0 -1 S", MarsRoverSimulator().execute("5 5\n" +
                 "0 0 S\n" +
                 "M"), "Should admit rover stepping off the plateau")
     }

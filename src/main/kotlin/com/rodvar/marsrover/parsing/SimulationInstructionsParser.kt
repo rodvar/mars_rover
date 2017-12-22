@@ -22,7 +22,8 @@ class SimulationInstructionsParser(val inputData: String) {
     private val ROVER_INSTRUCTIONS_LINE_PATTERN = Pattern.compile(" *(L|R|M) *")
 
     /**
-     *
+     * Splits the input into lines and returns the plateau.
+     * @throws IllegalArgumentException if the plateau definition is incorrect
      */
     fun parse(): Plateau {
         inputDataLines = inputData.split("\n")

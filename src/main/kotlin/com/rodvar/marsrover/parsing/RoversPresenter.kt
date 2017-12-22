@@ -24,19 +24,16 @@ class RoversPresenter(val rovers: List<Rover>) {
      *
      */
     override fun toString(): String {
-        var output = NO_ROVERS_LANDED
+        var output = ""
+
         if (rovers.isEmpty())
             output = NO_ROVERS
-        rovers.filter { it.plateau?.isRoverOnPlateau(it) ?: false }
-                .map { _ ->
-                    if (rovers.size > 0) {
-                        output = ""
-                        for (rover in rovers) {
-                            output += rover.x.toString() + " " + rover.y.toString() + " " + rover.orientation.toString() + "\n"
-                        }
-                        output = output.substring(0, output.length - 1)
-                    }
-                }
+        else {
+            rovers.map { it ->
+                output += "\n" + it.x.toString() + " " + it.y.toString() + " " + it.orientation.toString()
+            }
+            output = output.substring(1)
+        }
         return output
     }
 }

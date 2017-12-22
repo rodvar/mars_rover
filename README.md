@@ -12,6 +12,7 @@ Given the rover dimensions and the set of rovers + movement instructions, it wil
  - Much more input flexibility. Supports blank lines, separations, extra spaces in between numbers, etc
  - Validates positioning of rovers on top of each other
  - Rovers can fly in and out of the plateau. However, rovers can't be positioned out of the plateau on start.
+ - Validates Numbers/Letters usage through regular expressions, all the letters must be caps.
  - CI during development, much robust version :)
 
 # How to test it
