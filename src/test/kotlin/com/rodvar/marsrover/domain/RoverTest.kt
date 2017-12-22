@@ -1,6 +1,5 @@
-package com.rodvar.marsrover
+package com.rodvar.marsrover.domain
 
-import com.rodvar.marsrover.domain.Rover
 import org.junit.Before
 import org.junit.Test
 import kotlin.test.assertEquals

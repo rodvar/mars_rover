@@ -11,9 +11,21 @@ class MarsRoverSimulatorTest {
     private val BASIC_TEST_INPUT = "5 5\n1 2 N\nLMLMLMLMM\n3 3 E\nMMRMMRMRRM"
     private val BASIC_TEST_EXPECTED = "1 3 N\n5 1 E"
 
+    private val SUPPORTS_BLANK_LINES = "\n5 5\n\n\n1 2 N\n\nLMLMLMLMM\n\n3 3 E\n\nMMRMMRMRRM\n\n"
+
     @Test
     fun testBasicProvidedDataSet() {
         assertEquals(BASIC_TEST_EXPECTED, MarsRoverSimulator().execute(BASIC_TEST_INPUT))
+    }
+
+    @Test
+    fun testSupportsBlankLines() {
+        assertEquals(BASIC_TEST_EXPECTED, MarsRoverSimulator().execute(SUPPORTS_BLANK_LINES))
+    }
+
+    @Test
+    fun testValidDimensions() {
+        assertEquals(RoversPresenter.NO_ROVERS, MarsRoverSimulator().execute("   100     -54   "))
     }
 
     @Test

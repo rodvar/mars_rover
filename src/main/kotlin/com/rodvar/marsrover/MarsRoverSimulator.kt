@@ -19,21 +19,25 @@ class MarsRoverSimulator {
      * Executes the simulation based on the inputData string, returning the results as a striong as well
      */
     fun execute(inputData: String): String {
+        var output: String
         try {
             println("Received input: " + inputData)
 
             val simulationInstructionsReader = SimulationInstructionsParser(inputData)
-            simulationInstructionsReader.parse()
-            val plateau = simulationInstructionsReader.init()
-            
+            val plateau = simulationInstructionsReader.parse()
+
+            if (plateau == null)
+                throw IllegalArgumentException("No plateau provided")
+
             println(String.format("Dimensions (%s,%s)", plateau.maxX, plateau.maxY))
             simulationInstructionsReader.positioning(plateau)
             executeMovements(plateau, simulationInstructionsReader)
 
-            return RoversPresenter(plateau.rovers).toString()
+            output = RoversPresenter(plateau.rovers).toString()
         } catch (e: Exception) {
-            return e.localizedMessage
+            output = e.localizedMessage
         }
+        return output
     }
 
     private fun executeMovements(plateau: Plateau, simulationInstructionsReader: SimulationInstructionsParser) {
@@ -42,8 +46,8 @@ class MarsRoverSimulator {
             try {
                 plateau.move(i, simulationInstructionsReader.instructionsFor(i))
             } catch (e: IndexOutOfBoundsException) {
-	         println("Ignoring movement trying to go out of bounds")	
-	    }
+                println("Ignoring movement trying to go out of bounds")
+            }
         }
     }
 
